@@ -33,10 +33,7 @@ public class JeepRouteController {
     @GetMapping("")
     public ResponseEntity<List<JeepRouteModel>> GetAll() {
         List<JeepRouteModel> jeepRoutes = jeepRouteService.GetAll();
-        if(!jeepRoutes.isEmpty())
-            return ResponseEntity.ok(jeepRoutes);
-        else
-            return ResponseEntity.notFound().build();
+        return !jeepRoutes.isEmpty() ? ResponseEntity.ok(jeepRoutes) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{jeepId}/{routeId}")
@@ -55,7 +52,7 @@ public class JeepRouteController {
                 if(newJeepRoute!=null)
                     return ResponseEntity.ok(newJeepRoute);
             } catch (NoSuchElementException e) {
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.badRequest().build();
             }
         }
         return ResponseEntity.badRequest().build();

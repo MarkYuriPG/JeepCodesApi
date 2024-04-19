@@ -44,7 +44,7 @@ public class JeepRouteService {
                 List<JeepRouteModel> jeepRoutes = GetAll();
 
                 Optional<JeepRouteModel> existingJeepRoute = jeepRoutes.stream()
-                                                .filter(existing -> existing.getId().equals(jeepRoute.getId()))
+                                                .filter(existing -> existing.equals(jeepRoute))
                                                 .findFirst();
             
                 if(!existingJeepRoute.isPresent())
@@ -59,19 +59,29 @@ public class JeepRouteService {
     public JeepRouteModel Update(JeepRouteModel jeepRoute){
         if(jeepRoute!=null)
         {
+            int jeepId = jeepRoute.getId().getJeepId();
+            int routeId = jeepRoute.getId().getRouteId();
+
             try {
-                JeepRouteModel targetJeepRoute = GetById(jeepRoute.getId());
-                targetJeepRoute.setId(jeepRoute.getId());
-                jeepRouteRepository.save(targetJeepRoute);
-                return targetJeepRoute;
+                if(jeepService.GetById(jeepId)!=null && routeService.GetById(routeId)!=null)
+                {
+                    try {
+                        JeepRouteModel targetJeepRoute = GetById(jeepRoute.getId());
+                        targetJeepRoute.setId(jeepRoute.getId());
+                        jeepRouteRepository.save(targetJeepRoute);
+                        return targetJeepRoute;
+                    } catch (NoSuchElementException e) {
+                        return Create(jeepRoute);
+                    }
+                }
             } catch (NoSuchElementException e) {
-                return Create(jeepRoute);
+                return null;
             }
         }
         return null;
     }
 
-    public void Delete(JeepRouteId id){
+    public void Delete(JeepRouteId id) {
         jeepRouteRepository.deleteById(id);
     }
 }

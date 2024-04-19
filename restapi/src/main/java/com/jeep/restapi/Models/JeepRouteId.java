@@ -11,10 +11,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Embeddable
 public class JeepRouteId implements Serializable {
-    @Column(name = "jeepId")
+    @Column(name = "jeep_id")
     private int jeepId;
 
-    @Column(name="routeId")
+    @Column(name = "route_id")
     private int routeId;
 
     public JeepRouteId(int jeepId, int routeId){
