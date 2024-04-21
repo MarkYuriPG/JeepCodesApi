@@ -31,7 +31,7 @@ public class JeepService {
 
     public JeepModel Create(JeepModel jeep){
         
-        if(jeep != null)
+        if(jeep != null && isValidJeepCode(jeep.getCode()))
         {   
             List<JeepModel> jeeps = GetAll();
 
@@ -50,13 +50,12 @@ public class JeepService {
 
     public JeepModel Update(JeepModel jeep)
     {
-        if(jeep != null)
+        if(jeep != null && isValidJeepCode(jeep.getCode()))
         {
             try {
                 JeepModel targetJeep = GetById(jeep.getId());
 
                 targetJeep.setCode(jeep.getCode());
-                targetJeep.setRoutes(jeep.getRoutes());
                 jeepRepository.save(targetJeep);
                 return targetJeep;
             } catch (NoSuchElementException e) {
@@ -73,5 +72,14 @@ public class JeepService {
 
         if(targetJeep!=null)
             jeepRepository.deleteById(id);
+    }
+
+    private boolean isValidJeepCode(String code) {
+        if (code != null && code.length() == 3) {
+            if (Character.isDigit(code.charAt(0)) && Character.isDigit(code.charAt(1))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

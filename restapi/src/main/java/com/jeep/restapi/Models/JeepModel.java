@@ -22,12 +22,8 @@ public class JeepModel {
     @Column(name="code")
     private String code;
 
-    @Column(name="routes")
-    private int routes;
-
-    public JeepModel(String code, int routes)
+    public JeepModel(String code)
     {
         this.code = code;
-        this.routes = routes;
     }
 }
